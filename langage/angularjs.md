@@ -53,3 +53,4 @@ Voici un tableau détaillant **40 vulnérabilités AngularJS** (XSS, prototype p
 | 40 | CVE-2014-8907 | AngularJS <1.3.0 | XSS via ng-options | `<select ng-options="'<script>alert(1)</script>'"></select>` | https://github.com/angular/angular.js/issues/16296 |
 
 ---
+
